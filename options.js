@@ -23,15 +23,17 @@ form.addEventListener("submit", (e) => {
     let folder = document.forms["form"].folders.value;
     console.log(folder);
     chrome.storage.sync.set({ folder: folder });
+    chrome.storage.sync.set({ bookmarkIndex: 0 })
     chrome.storage.sync.get("folder", (data) => {
         chrome.bookmarks.getTree((nodes) => {
             let childrenArray = nodes[0].children;
-            let index = childrenArray.findIndex(c => {
-                console.log(c.title);
-                console.log(data.folder);
-                return c.title === data.folder});
-            console.log(`Storing the bookmark folder index ${index}.`);
-            chrome.storage.sync.set({index} );
+            let folderIndex = childrenArray.findIndex(c => {
+
+                return c.title === data.folder
+            });
+            console.log(`Storing the bookmark folder index ${folderIndex}.`);
+            chrome.storage.sync.set({ folderIndex });
+
         });
 
 
