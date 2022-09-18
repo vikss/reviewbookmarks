@@ -1,14 +1,14 @@
 {
-
-"name":"Review Bookmarks",
-"description":"Trimming one bookmark a day keeps the clutter away.",
-"manifest_version":3,
-"version":"1.0",
-"action":{
-
-    "default_popup":"index.html"
-},
-"permissions":["storage","bookmarks"],
-"options_page":"options.html"
-
+    "name": "Review Bookmarks",
+    "description": "Trimming one bookmark a day keeps the clutter away.",
+    "manifest_version": 3,
+    "version": "1.0",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "storage",
+        "bookmarks"
+    ],
+    "options_page": "options.html"
 }

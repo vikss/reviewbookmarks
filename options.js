@@ -27,12 +27,12 @@ form.addEventListener("submit", (e) => {
     chrome.storage.sync.get("folder", (data) => {
         chrome.bookmarks.getTree((nodes) => {
             let childrenArray = nodes[0].children;
-            let folderIndex = childrenArray.findIndex(c => {
+            let folderNode = childrenArray.find(c => {
 
                 return c.title === data.folder
             });
-            console.log(`Storing the bookmark folder index ${folderIndex}.`);
-            chrome.storage.sync.set({ folderIndex });
+            console.log(`Storing the bookmark folder id ${folderNode.id}.`);
+            chrome.storage.sync.set({ folderId: folderNode.id });
 
         });
 
