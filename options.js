@@ -1,20 +1,28 @@
+import {getAllFolders} from './common.js';
 let selectEle = document.getElementById("folders");
 let option = document.createElement("button");
 let form = document.getElementById("form");
 
 
 function formOptions() {
-    chrome.bookmarks.getTree((nodes) => {
-        let folders = nodes[0].children;
-        for (let i = 0; i < folders.length; i++) {
-            let title = folders[i].title;
-            let ele = document.createElement("option")
-            ele.text = title;
-            ele.value = title;
-            selectEle.appendChild(ele);
-        }
 
-    })
+        getAllFolders((data)=>{
+
+            folders = data.res;
+            console.log(folders);
+            for (let i = 0; i < folders.length; i++) {
+                let title = folders[i].title;
+                let ele = document.createElement("option")
+                ele.text = title;
+                ele.value = title;
+                selectEle.appendChild(ele);
+            }
+
+
+        });
+       
+
+   
 }
 form.addEventListener("submit", (e) => {
 

@@ -1,3 +1,4 @@
+import {getAllFolders} from './common.js';
 let folderElem = document.getElementById("folder")
 let bookmarkElem = document.getElementById("bookmark")
 let removeElem = document.getElementById("remove")
@@ -9,6 +10,7 @@ let allFolders = [];
 let bookmarkArr;
 let folderIndex;
 let url;
+
 function render() {
 
     chrome.storage.sync.get("folder", (data) => {
@@ -19,7 +21,9 @@ function render() {
         bookmarkIndex = data.bookmarkIndex;
 
         chrome.storage.sync.get("folderId", (data) => {
+            folderIndex = data.folderId;
             chrome.bookmarks.getChildren(data.folderId, (arr) => {
+                
                 bookmarkArr = arr;
                 bookmark = arr[bookmarkIndex];
                 assignBookmark(bookmark);
@@ -39,13 +43,18 @@ render();
 
 function setNextBookmark(index) {
     let nextBookmark;
-    console.log(bookmarkArr)
+    bookmarkIndex = index;
     if (index < bookmarkArr.length) {
-        bookmarkIndex = index;
+        
+        if(bookmarkArr[bookmarkIndex].hasOwnProperty("dateGroupModified"))
+         return setNextBookmark(++index);
+        
         nextBookmark = bookmarkArr[bookmarkIndex];
-        chrome.storage.sync.set({ bookmarkIndex: bookmarkIndex });
+        
+      
+        
     }
-
+    chrome.storage.sync.set({ bookmarkIndex: bookmarkIndex });
 
     return nextBookmark;
 
@@ -57,11 +66,7 @@ function assignBookmark(bookmarkObj) {
         bookmarkElem.href = bookmarkObj.url;
 
         url = bookmarkObj.url;
-        console.log(bookmarkObj);
         bookmark = bookmarkObj;
-
-
-        document.createElement("option");
 
     }
     else {
@@ -69,39 +74,23 @@ function assignBookmark(bookmarkObj) {
         document.getElementById("form").style.display = "none";
         document.getElementById("content").innerText = "Reached the end!"
     }
-
+console.log(getAllFolders())
 
 }
 function getFolders() {
 
-    let res = [];
-    chrome.bookmarks.getTree((node) => {
-        let topFolders = node[0].children;
+   
+    let result = getAllFolders()
+    console.log(result)
+    for(let i=0;i<result.length;i++){
+        let option = document.createElement("option");
+        option.text = result[i].title;
+        option.value = result[i].title;
+        moveElem.appendChild(option)
+     }
+            
+        
 
-        for (let i = 0; i < topFolders.length; i++) {
-            res.push(topFolders[i]);
-            let option = document.createElement("option");
-            option.text = topFolders[i].title;
-            option.value = topFolders[i].title;
-            moveElem.appendChild(option)
-            chrome.bookmarks.getChildren(topFolders[i].id, (arr) => {
-                let a = arr.filter(node => node.hasOwnProperty("dateGroupModified"));
-                a.forEach(ele => {
-
-                    let element = document.createElement("option");
-                    element.text = ele.title;
-                    element.value = ele.title;
-                    moveElem.appendChild(element);
-
-                    res.push(ele)
-                });
-
-
-            })
-        }
-    }
-
-    )
 
 
 }
@@ -112,13 +101,10 @@ bookmarkElem.addEventListener("click", (event) => {
 
 
 });
-chrome.storage.onChanged.addListener((changes, namespace) => {
-    console.log(changes)
-    console.log(namespace)
-})
+
 moveElem.addEventListener("click", (event) => {
 
-   
+   console.log(event.target.value)
 
 })
 removeElem.addEventListener("click", (event) => {
@@ -126,11 +112,11 @@ removeElem.addEventListener("click", (event) => {
     console.log(bookmark)
     chrome.bookmarks.remove((bookmark.id), () => {
         console.log("Removed the bookmark.");
-        chrome.bookmarks.getTree((node) => {
+        chrome.bookmarks.getChildren(folderIndex, (arr) => {
 
-
-            bookmarkArr = node[0].children[folderIndex];
-            console.log(bookmarkArr);
+            console.log("Folder id is ", folderIndex)
+            bookmarkArr = arr;
+            console.log("Bookmarks array is ", bookmarkArr);
             setNewBookmark(bookmarkIndex);
         });
 
