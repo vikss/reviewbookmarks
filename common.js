@@ -49,4 +49,4 @@ function getSubFolders(res) {
 
 
 }
-export { getAllFolders, getSubFolders };
+export { getAllFolders};

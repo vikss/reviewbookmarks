@@ -1,4 +1,4 @@
-import {getAllFolders} from './common.js';
+import { getAllFolders } from './common.js';
 let folderElem = document.getElementById("folder")
 let bookmarkElem = document.getElementById("bookmark")
 let removeElem = document.getElementById("remove")
@@ -6,32 +6,27 @@ let moveElem = document.getElementById("move")
 let keepElem = document.getElementById("keep")
 let bookmark;
 let bookmarkIndex = 0;
-let allFolders = [];
 let bookmarkArr;
 let folderIndex;
 let url;
 
 function render() {
 
-    chrome.storage.sync.get("folder", (data) => {
+    chrome.storage.sync.get("folder").then((data) => {
         folderElem.innerText = data.folder;
 
     });
-    chrome.storage.sync.get("bookmarkIndex", (data) => {
+    chrome.storage.sync.get("bookmarkIndex").then((data) => {
         bookmarkIndex = data.bookmarkIndex;
 
-        chrome.storage.sync.get("folderId", (data) => {
+        chrome.storage.sync.get("folderId").then((data) => {
             folderIndex = data.folderId;
             chrome.bookmarks.getChildren(data.folderId, (arr) => {
-                
+
                 bookmarkArr = arr;
                 bookmark = arr[bookmarkIndex];
                 assignBookmark(bookmark);
-
-
             })
-
-
         });
 
     });
@@ -45,14 +40,14 @@ function setNextBookmark(index) {
     let nextBookmark;
     bookmarkIndex = index;
     if (index < bookmarkArr.length) {
-        
-        if(bookmarkArr[bookmarkIndex].hasOwnProperty("dateGroupModified"))
-         return setNextBookmark(++index);
-        
+
+        if (bookmarkArr[bookmarkIndex].hasOwnProperty("dateGroupModified"))
+            return setNextBookmark(++index);
+
         nextBookmark = bookmarkArr[bookmarkIndex];
-        
-      
-        
+
+
+
     }
     chrome.storage.sync.set({ bookmarkIndex: bookmarkIndex });
 
@@ -61,10 +56,9 @@ function setNextBookmark(index) {
 }
 function assignBookmark(bookmarkObj) {
     if (bookmarkObj) {
-        console.log('Bookmark object is', bookmarkObj)
+        console.log('Current bookmark object is', bookmarkObj)
         bookmarkElem.innerText = bookmarkObj.title;
         bookmarkElem.href = bookmarkObj.url;
-
         url = bookmarkObj.url;
         bookmark = bookmarkObj;
 
@@ -74,24 +68,19 @@ function assignBookmark(bookmarkObj) {
         document.getElementById("form").style.display = "none";
         document.getElementById("content").innerText = "Reached the end!"
     }
-console.log(getAllFolders())
 
 }
 function getFolders() {
 
-   
-    let result = getAllFolders()
-    console.log(result)
-    for(let i=0;i<result.length;i++){
-        let option = document.createElement("option");
-        option.text = result[i].title;
-        option.value = result[i].title;
-        moveElem.appendChild(option)
-     }
-            
-        
 
-
+    getAllFolders().then(result => {
+        for (let i = 0; i < result.length; i++) {
+            let option = document.createElement("option");
+            option.text = result[i].title;
+            option.value = result[i].title;
+            moveElem.appendChild(option)
+        }
+    })
 
 }
 
@@ -104,26 +93,21 @@ bookmarkElem.addEventListener("click", (event) => {
 
 moveElem.addEventListener("click", (event) => {
 
-   console.log(event.target.value)
+    console.log(event.target.value)
 
 })
 removeElem.addEventListener("click", (event) => {
     event.preventDefault();
-    console.log(bookmark)
-    chrome.bookmarks.remove((bookmark.id), () => {
-        console.log("Removed the bookmark.");
-        chrome.bookmarks.getChildren(folderIndex, (arr) => {
+    console.log("Removing the bookmark", bookmark)
+    chrome.bookmarks.remove(bookmark.id).then(() => {
+        chrome.bookmarks.getChildren(folderIndex).then((arr) => {
 
             console.log("Folder id is ", folderIndex)
             bookmarkArr = arr;
             console.log("Bookmarks array is ", bookmarkArr);
             setNewBookmark(bookmarkIndex);
         });
-
-
-
-
-    })
+    });
 
 
 })
