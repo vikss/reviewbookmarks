@@ -1,28 +1,26 @@
-import {getAllFolders} from './common.js';
-let selectEle = document.getElementById("folders");
-let option = document.createElement("button");
+import { getAllFolders } from './common.js';
+
 let form = document.getElementById("form");
 
 
 function formOptions() {
+    let selectEle = document.getElementById("folders");
+    getAllFolders().then((data) => {
 
-        getAllFolders((data)=>{
-
-            folders = data.res;
-            console.log(folders);
-            for (let i = 0; i < folders.length; i++) {
-                let title = folders[i].title;
-                let ele = document.createElement("option")
-                ele.text = title;
-                ele.value = title;
-                selectEle.appendChild(ele);
-            }
+        let folders = data;
+        console.log(folders);
+        for (let i = 0; i < folders.length; i++) {
+            let title = folders[i].title;
+            let ele = document.createElement("option")
+            ele.text = title;
+            ele.value = title;
+            selectEle.appendChild(ele);
+        }
 
 
-        });
-       
+    });
 
-   
+
 }
 form.addEventListener("submit", (e) => {
 
@@ -32,8 +30,8 @@ form.addEventListener("submit", (e) => {
     console.log(folder);
     chrome.storage.sync.set({ folder: folder });
     chrome.storage.sync.set({ bookmarkIndex: 0 })
-    chrome.storage.sync.get("folder", (data) => {
-        chrome.bookmarks.getTree((nodes) => {
+    chrome.storage.sync.get("folder").then((data) => {
+        chrome.bookmarks.getTree().then((nodes) => {
             let childrenArray = nodes[0].children;
             let folderNode = childrenArray.find(c => {
 
@@ -49,6 +47,6 @@ form.addEventListener("submit", (e) => {
 
 })
 
-
 formOptions();
+
 
