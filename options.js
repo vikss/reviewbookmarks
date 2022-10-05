@@ -17,7 +17,6 @@ function formOptions() {
             selectEle.appendChild(ele);
         }
 
-
     });
 
 
@@ -31,7 +30,8 @@ form.addEventListener("submit", (e) => {
     chrome.storage.sync.set({ folder: folder });
     chrome.storage.sync.set({ bookmarkIndex: 0 })
     getAllFolders().then((folders) => {
-        let newFolder = folders.find(folderObj => 
+
+        let newFolder = folders.find(folderObj =>
             folderObj.title == folder
         );
         console.log(`Storing the bookmark folder id ${newFolder.id}.`);

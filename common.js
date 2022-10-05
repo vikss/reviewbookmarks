@@ -44,9 +44,5 @@ function getSubFolders(res) {
         return arr;
 
     });
-
-
-
-
 }
-export { getAllFolders};
+export { getAllFolders };
