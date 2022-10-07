@@ -9,8 +9,7 @@ let cancelElem = createPrimaryButton("Cancel")
 let bookmark;
 let bookmarkIndex = 0;
 let bookmarkArr;
-let folderIndex;
-let url;
+
 
 function render() {
 
@@ -36,7 +35,6 @@ render();
 function getBookmarkArray() {
 
     let promise = chrome.storage.sync.get("folderId").then((data) => {
-        folderIndex = data.folderId;
         let promise = chrome.bookmarks.getChildren(data.folderId).then((arr) => {
 
             return arr;
@@ -69,7 +67,6 @@ function assignBookmark(bookmarkObj) {
         console.log('Current bookmark object is', bookmarkObj)
         bookmarkElem.innerText = bookmarkObj.title;
         bookmarkElem.href = bookmarkObj.url;
-        url = bookmarkObj.url;
         bookmark = bookmarkObj;
 
     }
@@ -95,8 +92,8 @@ function getFolders() {
 }
 
 bookmarkElem.addEventListener("click", (event) => {
-    console.log(`Redirecting to ${url}`);
-    chrome.tabs.create({ url: url });
+    console.log(`Redirecting to ${bookmark.url}`);
+    chrome.tabs.create({ url: bookmark.url });
 
 
 });
