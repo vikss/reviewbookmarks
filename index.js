@@ -132,6 +132,9 @@ function createPrimaryButton(text) {
 
     ele.classList.add("btn");
     ele.classList.add("btn-primary");
+    ele.classList.add("col-2")
+    ele.classList.add("m-1")
+    ele.classList.add("p-1")
     return ele;
 
 }
