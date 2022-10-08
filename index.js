@@ -4,8 +4,8 @@ let bookmarkElem = document.getElementById("bookmark")
 let removeElem = document.getElementById("remove")
 let moveElem = document.getElementById("move")
 let keepElem = document.getElementById("keep")
-let doneElem = createPrimaryButton("Done");
-let cancelElem = createPrimaryButton("Cancel")
+let doneElem = document.getElementById("done")
+let cancelElem = document.getElementById("cancel")
 let bookmark;
 let bookmarkIndex = 0;
 let bookmarkArr;
@@ -99,46 +99,28 @@ bookmarkElem.addEventListener("click", (event) => {
 });
 moveElem.addEventListener("focus", (event) => {
     event.preventDefault();
-    let div = document.getElementById("buttons");
-    console.log(event.target.value);
-
-    div.removeChild(removeElem);
-    div.removeChild(keepElem);
-    div.appendChild(doneElem);
-    div.appendChild(cancelElem);
+    removeElem.classList.add("d-none");
+    keepElem.classList.add("d-none");
+    doneElem.classList.remove("d-none")
+    cancelElem.classList.remove("d-none")
 
 
 
     cancelElem.addEventListener("click", (event) => {
         event.preventDefault();
 
-        removeElem = createPrimaryButton("Remove")
-        keepElem = createPrimaryButton("Keep")
         moveElem.selectedIndex = 0;
-        div.removeChild(cancelElem);
-        div.removeChild(doneElem);
-        div.appendChild(keepElem);
-        div.appendChild(removeElem);
+        cancelElem.classList.add("d-none");
+        doneElem.classList.add("d-none");
+        keepElem.classList.remove("d-none")
+        removeElem.classList.remove("d-none")
+
 
 
 
     });
 
 });
-
-function createPrimaryButton(text) {
-    let ele = document.createElement("button");
-    ele.innerHTML = text;
-
-    ele.classList.add("btn");
-    ele.classList.add("btn-primary");
-    ele.classList.add("col-2")
-    ele.classList.add("m-1")
-    ele.classList.add("p-1")
-    return ele;
-
-}
-
 moveElem.addEventListener("change", (event) => {
 
     console.log(event.target.value);
@@ -158,7 +140,6 @@ moveElem.addEventListener("change", (event) => {
     })
 
     destinationObj.then((obj) => {
-        console.log(obj);
         let id = bookmark.id;
         let index = bookmarkIndex;
         doneElem.addEventListener("click", (event) => {
@@ -166,18 +147,16 @@ moveElem.addEventListener("change", (event) => {
             chrome.bookmarks.move(id, obj).then((data) => {
                 console.log("Successfully moved the bookmark.");
                 moveElem.selectedIndex = 0;
-                console.log(index);
                 getBookmarkArray().then((arr) => {
                     bookmarkArr = arr;
                     bookmark = bookmarkArr[bookmarkIndex];
                     console.log(bookmarkArr);
                     assignBookmark(bookmark);
                 });
-                let div = document.getElementById("buttons");
-                div.removeChild(cancelElem);
-                div.removeChild(doneElem);
-                div.appendChild(keepElem);
-                div.appendChild(removeElem);
+                cancelElem.classList.add("d-none");
+                doneElem.classList.add("d-none");
+                keepElem.classList.remove("d-none");
+                removeElem.classList.remove("d-none");
             }, (err) => { console.log("Encountered some error.") });
 
 
