@@ -4,7 +4,7 @@
     margin-right: 8px;
 }
 
-#form {
+#form, #content {
     width: 500px;
 }
 
