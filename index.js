@@ -72,8 +72,7 @@ function assignBookmark(bookmarkObj) {
     }
     else {
 
-        document.getElementById("form").style.display = "none";
-        document.getElementById("content").innerText = "Reached the end!"
+        document.getElementById("form").innerText = "Reached the end!";
     }
 
 }

@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/custom_bootstrap.css">
@@ -12,39 +11,36 @@
 
 </head>
 
-<body>
+<body class="container">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <div id="content" class="ml-3">
-        <div id="form" class="container my-2">
-            <div class="row heading">
-                <label for="heading" class="mb-3">Bookmark</label>
-            </div>
-            <div class="row mb-2 fs-6">
-                <label for="bookmark" class="col-1 name">Name</label>
-                <a id="bookmark" class="col text-truncate"></a>
-            </div>
+    <div id="form" class="mx-2 my-2">
+        <div class="row heading">
+            <label for="heading" class="display-6 mb-3">Bookmark</label>
+        </div>
+        <div class="row mb-2 fs-6">
+            <label for="bookmark" class="col-2 name">Name</label>
+            <a id="bookmark" class="col-10 text-truncate"></a>
+        </div>
 
-            <div class="row fs-6">
-                <label for="folders" class="col-1 folder">Folder</label>
-                <p class="col" id="folder"></p>
+        <div class="row fs-6">
+            <label for="folders" class="col-2 folder">Folder</label>
+            <p class="col-10" id="folder"></p>
+        </div>
+        <div id="buttons" class="row">
+            <div class="col-4">
+                <select name="move" id="move" class="col-4 form-select my-1" style="width: auto;">
+                    <option value="Move to" disabled selected>Move to</option>
+                </select>
             </div>
-            <div id="buttons" class="row">
-                <div class="col-4">
-                    <select name="move" id="move" class="col-4 form-select my-1" style="width: auto;">
-                        <option value="Move to" disabled selected>Move to</option>
-                    </select>
+            <div class="col-8">
+                <div class="row justify-content-end">
+                    <button type="submit" class="btn btn-primary col-4 m-1 p-1" id="keep">Keep</button>
+                    <button type="submit" class="btn btn-primary col-4 m-1 p-1" id="remove">Remove</button>
+                    <button type="submit" class="btn btn-primary col-4 m-1 p-1 d-none" id="done">Done</button>
+                    <button type="submit" class="btn btn-primary col-4 m-1 p-1 d-none" id="cancel">Cancel</button>
                 </div>
-                <div class="col-8">
-                    <div class="row justify-content-end">
-                        <button type="submit" class="btn btn-primary col-4 m-1 p-1" id="keep">Keep</button>
-                        <button type="submit" class="btn btn-primary col-4 m-1 p-1" id="remove">Remove</button>
-                        <button type="submit" class="btn btn-primary col-4 m-1 p-1 d-none" id="done">Done</button>
-                        <button type="submit" class="btn btn-primary col-4 m-1 p-1 d-none" id="cancel">Cancel</button>
-                    </div>
-                </div>
-
             </div>
 
         </div>
