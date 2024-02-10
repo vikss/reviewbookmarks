@@ -29,13 +29,26 @@ form.addEventListener("submit", (e) => {
     console.log(folder);
     chrome.storage.sync.set({ folder: folder });
     chrome.storage.sync.set({ bookmarkIndex: 0 })
+    
     getAllFolders().then((folders) => {
-
+        let btnEle = document.getElementById("btn")
         let newFolder = folders.find(folderObj =>
             folderObj.title == folder
         );
         console.log(`Storing the bookmark folder id ${newFolder.id}.`);
-        chrome.storage.sync.set({ folderId: newFolder.id });
+       
+        
+
+        chrome.storage.sync.set({ folderId: newFolder.id }).then((res)=>{
+            btnEle.innerHTML = "Saved!"
+            setTimeout(()=>{
+                document.getElementById("folders").selectedIndex=0;
+                btnEle.innerHTML = "Submit"
+                
+
+            },5000)
+
+        });
 
 
     })
