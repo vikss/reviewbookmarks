@@ -10,5 +10,5 @@ Usage -
 * Select the bookmarks folder from the dropdown and save it
 * Get going
 
-In action -
+In action - <br />
 ![alt text](addin.PNG)
