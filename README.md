@@ -11,4 +11,4 @@ Usage -
 * Get going
 
 In action -
-![alt text](addin.png)
+![alt text](addin.PNG)
